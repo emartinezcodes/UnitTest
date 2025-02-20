@@ -1,0 +1,11 @@
+# Ignore Eclipse project metadata
+.classpath
+.project
+.settings/
+
+# Ignore compiled files
+bin/
+target/
+
+# Ignore IDE-specific settings
+.idea/
