@@ -2,21 +2,20 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/emartinezcodes/UnitTest.git'
+            }
+        }
+
         stage('Build') {
             steps {
-                echo 'Build App'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Test App'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploy App'
+                script {
+                    docker.image('openjdk:17-jdk').inside {
+                        sh 'mvn clean package'
+                    }
+                }
             }
         }
     }
 }
-
