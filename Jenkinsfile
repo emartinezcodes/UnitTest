@@ -1,11 +1,10 @@
 pipeline {
     agent any
     stages {
-        stage('First Stage') {
+        stage('Test') {
             steps {
-                echo '✅ It works!'
+                echo 'Jenkins is working!'
             }
         }
     }
 }
-
