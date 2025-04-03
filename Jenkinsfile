@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     docker.image('maven:3.9.6-eclipse-temurin-11').inside {
-                        sh 'mvn test' // Run tests
+                        sh 'mvn clean test -P java11-tests'
                     }
                 }
             }
