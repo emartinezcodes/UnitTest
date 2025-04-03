@@ -18,14 +18,5 @@ pipeline {
             }
         }
     }
-    
-    post {
-        always {
-            mail(
-                to: "emartinez545@toromail.csudh.edu",
-                subject: "Pipeline Status",
-                body: "Summary of the pipeline execution."
-            )
-        }
-    }
 }
+
