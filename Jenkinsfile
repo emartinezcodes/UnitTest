@@ -11,8 +11,11 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    docker.image('maven:3.9.6-eclipse-temurin-17').inside {
-                        sh 'mvn clean package'
+                    docker.image('openjdk:17-jdk').inside {
+                        sh '''
+                            apt-get update && apt-get install -y maven
+                            mvn clean package
+                        '''
                     }
                 }
             }
