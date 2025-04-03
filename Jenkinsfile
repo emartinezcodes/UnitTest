@@ -27,11 +27,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Publish Test Results') {
-            steps {
-                junit '**/target/test-*.xml' // Publish the test results
-            }
-        }
     }
 }
+
