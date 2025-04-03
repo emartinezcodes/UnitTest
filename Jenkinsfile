@@ -1,20 +1,14 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'maven:3.9.6-eclipse-temurin-17'
+        }
+    }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git url: 'https://github.com/emartinezcodes/UnitTest.git'
-            }
-        }
-
         stage('Build') {
             steps {
-                script {
-                    docker.image('maven:3.9.6-eclipse-temurin-17').inside {
-                        sh 'mvn clean package'
-                    }
-                }
+                sh 'mvn clean package'
             }
         }
     }
