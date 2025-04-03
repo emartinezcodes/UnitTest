@@ -1,16 +1,9 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+        stage('Git Works') {
             steps {
-                dir('UnitTest') {
-                    git 'https://github.com/emartinezcodes/UnitTest.git'
-                }
-            }
-        }
-        stage('Build') {
-            steps {
-                echo '✅ Build stage reached!'
+                echo '✅ Pulled Jenkinsfile from GitHub!'
             }
         }
     }
