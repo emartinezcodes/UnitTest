@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     docker.image('maven:3.9.6-eclipse-temurin-17').inside {
-                        sh 'mvn clean compile'
+                        sh 'mvn clean install -DskipTests' // Skip tests during build
                     }
                 }
             }
@@ -22,10 +22,17 @@ pipeline {
             steps {
                 script {
                     docker.image('maven:3.9.6-eclipse-temurin-11').inside {
-                        sh 'mvn test'
+                        sh 'mvn test' // Run tests
                     }
                 }
             }
         }
+
+        stage('Publish Test Results') {
+            steps {
+                junit '**/target/test-*.xml' // Publish the test results
+            }
+        }
     }
 }
+
