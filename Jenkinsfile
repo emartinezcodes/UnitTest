@@ -2,9 +2,8 @@ pipeline {
     agent any
 
     environment {
-        // Ensure SONARQUBE_SERVER is set to match your accessible SonarQube server
-        SONARQUBE_SERVER = 'http://sonar:9000'
-        SONARQUBE_TOKEN = credentials('sonarqube-token')  // Use the Jenkins credentials ID for the SonarQube token
+        // Update SonarQube Server URL to the external IP when accessing from outside Docker
+        SONARQUBE_SERVER = 'http://127.0.0.1:9000'
     }
 
     stages {
@@ -40,8 +39,8 @@ pipeline {
                     docker.image('maven:3.9.6-jdk-8').inside {
                         withSonarQubeEnv('sonarqube') {
                             echo "Running SonarQube analysis with Java 8..."
-                            // Using the SonarQube token for authentication
-                            sh 'mvn sonar:sonar -Dsonar.projectKey=midterm-jenkins-project -Dsonar.branch.name=main -Dsonar.host.url=http://sonar:9000 -Dsonar.login=${SONARQUBE_TOKEN}'
+                            // Update SonarQube URL for external access
+                            sh 'mvn sonar:sonar -Dsonar.projectKey=midterm-jenkins-project -Dsonar.branch.name=main -Dsonar.host.url=http://127.0.0.1:9000'
                         }
                     }
                 }
@@ -49,5 +48,6 @@ pipeline {
         }
     }
 }
+
 
 
