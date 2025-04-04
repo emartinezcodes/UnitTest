@@ -2,8 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Define SonarQube URL (set this to your SonarQube container's IP and port)
-        SONARQUBE_URL = 'http://172.20.0.3:9000'
+        SONARQUBE_SERVER = 'http://172.20.0.3:9000'
     }
 
     stages {
@@ -17,7 +16,7 @@ pipeline {
             steps {
                 script {
                     docker.image('maven:3.9.6-eclipse-temurin-17').inside {
-                        sh 'mvn clean install -DskipTests' // Skip tests during build
+                        sh 'mvn clean install -DskipTests'
                     }
                 }
             }
@@ -27,7 +26,7 @@ pipeline {
             steps {
                 script {
                     docker.image('maven:3.9.6-eclipse-temurin-11').inside {
-                        sh 'mvn clean test -P java11-tests'
+                        sh 'mvn test -P java11-tests'
                     }
                 }
             }
@@ -36,14 +35,13 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    withSonarQubeEnv('sonarqube') {
-                        sh "mvn sonar:sonar -Dsonar.host.url=${SONARQUBE_URL}"
+                    docker.image('maven:3.9.6-eclipse-temurin-11').inside {
+                        withSonarQubeEnv('SonarQube') {
+                            sh 'mvn sonar:sonar'
+                        }
                     }
                 }
             }
         }
-
-        // Optional: Add additional stages like artifact deployment, if needed
     }
 }
-
