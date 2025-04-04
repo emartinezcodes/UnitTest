@@ -31,6 +31,7 @@
   </build>
 
   <profiles>
+    <!-- Java 11 Tests Profile -->
     <profile>
       <id>java11-tests</id>
       <activation>
@@ -61,11 +62,10 @@
 
   <!-- SonarQube Configuration (Optional) -->
   <properties>
+    <!-- SonarQube project key and server details -->
     <sonar.projectKey>your-project-key</sonar.projectKey>
-    <sonar.host.url>http://sonarqube:9000</sonar.host.url>
-    <sonar.login>your-sonarqube-token</sonar.login>
+    <sonar.host.url>http://172.20.0.3:9000</sonar.host.url> <!-- Update to your actual SonarQube server -->
+    <sonar.login>your-sonarqube-token</sonar.login> <!-- Use your authentication token -->
   </properties>
 
 </project>
-
-
