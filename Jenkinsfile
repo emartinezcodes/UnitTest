@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SONARQUBE_TOKEN = credentials('sonarqube-token')  // Using Jenkins credentials for the token
+        SONARQUBE_TOKEN = credentials('squ_406b840192102c4836c56b80d8753822daf53e11')  // Using Jenkins credentials for the token
         SONARQUBE_SERVER = 'http://172.20.0.3:9000'
     }
 
