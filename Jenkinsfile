@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // You can set SONARQUBE_SERVER if needed for other purposes
+        // Ensure SONARQUBE_SERVER is set if needed for other purposes
         SONARQUBE_SERVER = 'http://172.20.0.3:9000'
     }
 
@@ -33,25 +33,14 @@ pipeline {
             }
         }
 
-        // Stage to test connection to SonarQube
-        stage('Test Connection to SonarQube') {
-            steps {
-                script {
-                    // Ensure Jenkins can reach the SonarQube server
-                    echo "Testing connection to SonarQube server..."
-                    sh 'curl -f http://172.20.0.3:9000 || echo "Unable to connect to SonarQube"'
-                }
-            }
-        }
+        // Removed the SonarQube analysis stages for Java 11 and Java 17
 
-        // SonarQube Analysis Stage
-        stage('SonarQube Analysis') {
+        stage('SonarQube Analysis with Java 8') {
             steps {
                 script {
-                    docker.image('maven:3.9.6-eclipse-temurin-11').inside {
-                        // Make sure SonarQube environment configuration name matches the one in Jenkins
+                    docker.image('maven:3.9.6-jdk-8').inside {
                         withSonarQubeEnv('sonarqube') {
-                            echo "Running SonarQube analysis..."
+                            echo "Running SonarQube analysis with Java 8..."
                             sh 'mvn sonar:sonar -Dsonar.projectKey=midterm-jenkins-project -Dsonar.branch.name=main'
                         }
                     }
