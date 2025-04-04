@@ -12,7 +12,7 @@
 
   <properties>
     <!-- SonarQube server configuration -->
-    <sonar.host.url>http://sonarqube:9000</sonar.host.url>  <!-- Adjust this to your actual SonarQube server URL -->
+    <sonar.host.url>http://localhost:9000</sonar.host.url>  <!-- Change to localhost for host machine access -->
   </properties>
 
   <build>
@@ -85,6 +85,7 @@
   </dependencies>
 
 </project>
+
 
 
 
