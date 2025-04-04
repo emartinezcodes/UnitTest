@@ -2,8 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Ensure SONARQUBE_SERVER is set if you need it for other purposes, 
-        // but the SonarQube plugin will use its own settings from Jenkins.
+        SONARQUBE_TOKEN = credentials('sonarqube-token')  // Using Jenkins credentials for the token
         SONARQUBE_SERVER = 'http://172.20.0.3:9000'
     }
 
@@ -38,7 +37,6 @@ pipeline {
         stage('Test Connection to SonarQube') {
             steps {
                 script {
-                    // Ensure Jenkins can reach the SonarQube server
                     echo "Testing connection to SonarQube server..."
                     sh 'curl -f http://172.20.0.3:9000 || echo "Unable to connect to SonarQube"'
                 }
@@ -49,9 +47,8 @@ pipeline {
             steps {
                 script {
                     docker.image('maven:3.9.6-eclipse-temurin-11').inside {
-                        // Ensure the SonarQube environment configuration name matches the one in Jenkins
                         withSonarQubeEnv('sonarqube') {
-                            echo "Running SonarQube analysis to test configuration..."
+                            echo "Running SonarQube analysis..."
                             sh 'mvn sonar:sonar'
                         }
                     }
@@ -60,4 +57,5 @@ pipeline {
         }
     }
 }
+
 
