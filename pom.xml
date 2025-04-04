@@ -25,7 +25,7 @@
       <plugin>
         <groupId>org.sonarsource.scanner.maven</groupId>
         <artifactId>sonar-maven-plugin</artifactId>
-        <version>3.9.0.2155</version>
+        <version>3.9.0.2155</version> <!-- Latest version -->
       </plugin>
     </plugins>
   </build>
@@ -59,14 +59,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <!-- SonarQube Configuration (Optional) -->
-  <properties>
-    <!-- SonarQube project key and server details -->
-    <sonar.projectKey>com.myfirstproject:myFirstProject</sonar.projectKey>
-    <sonar.host.url>http://172.20.0.3:9000</sonar.host.url> <!-- Update to your actual SonarQube server -->
-    <sonar.login>MYTOKEN</sonar.login> <!-- Use your authentication token -->
-  </properties>
 
 </project>
 
