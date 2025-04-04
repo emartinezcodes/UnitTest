@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Ensure SONARQUBE_TOKEN is set for secure authentication
         SONARQUBE_SERVER = 'http://172.20.0.3:9000'
-        SONARQUBE_TOKEN = credentials('sonar-token') // Securely inject the SonarQube token from Jenkins credentials store
+        SONARQUBE_TOKEN = credentials('sonarqube) // Securely inject the SonarQube token from Jenkins credentials store
     }
 
     stages {
