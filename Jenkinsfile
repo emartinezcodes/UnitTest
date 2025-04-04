@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Ensure SONARQUBE_SERVER is set if needed for other purposes
-        SONARQUBE_SERVER = 'http://172.22.0.2:9000'
+        SONARQUBE_SERVER = 'http://sonarqube:9000'
     }
 
     stages {
