@@ -1,3 +1,4 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -25,7 +26,7 @@
       <plugin>
         <groupId>org.sonarsource.scanner.maven</groupId>
         <artifactId>sonar-maven-plugin</artifactId>
-        <version>3.9.0.2155</version> <!-- Latest version -->
+        <version>3.9.0.2155</version>
       </plugin>
     </plugins>
   </build>
@@ -65,7 +66,8 @@
     <!-- SonarQube project key and server details -->
     <sonar.projectKey>com.myfirstproject:myFirstProject</sonar.projectKey>
     <sonar.host.url>http://172.20.0.3:9000</sonar.host.url> <!-- Update to your actual SonarQube server -->
-    <sonar.login>squ_406b840192102c4836c56b80d8753822daf53e11</sonar.login> <!-- Use your authentication token -->
+    <!-- Use Jenkins environment variable for the token -->
+    <sonar.login>${env.SONARQUBE_TOKEN}</sonar.login> <!-- Use an environment variable for security -->
   </properties>
 
 </project>
