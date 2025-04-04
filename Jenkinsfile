@@ -34,6 +34,17 @@ pipeline {
             }
         }
 
+        // New stage to test connection to SonarQube server
+        stage('Test Connection to SonarQube') {
+            steps {
+                script {
+                    // Ensure Jenkins can reach the SonarQube server
+                    echo "Testing connection to SonarQube server..."
+                    sh 'curl -f http://172.20.0.3:9000 || echo "Unable to connect to SonarQube"'
+                }
+            }
+        }
+
         stage('SonarQube Analysis') {
             steps {
                 script {
@@ -49,3 +60,4 @@ pipeline {
         }
     }
 }
+
