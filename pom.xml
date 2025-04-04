@@ -12,7 +12,7 @@
 
   <properties>
     <!-- SonarQube server configuration -->
-    <sonar.host.url>http://localhost:9000</sonar.host.url>  <!-- Change to localhost for host machine access -->
+    <sonar.host.url>http://sonar:9000</sonar.host.url> <!-- Change to 'sonar:9000' for Docker network communication -->
   </properties>
 
   <build>
