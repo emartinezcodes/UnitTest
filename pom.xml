@@ -12,13 +12,20 @@
 
   <build>
     <plugins>
+      <!-- Java 17 Compiler Plugin -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version>
         <configuration>
-          <!-- Use Java 17 for building the project -->
           <release>17</release>
         </configuration>
+      </plugin>
+
+      <!-- SonarQube Plugin -->
+      <plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.9.0.2155</version> <!-- Latest version -->
       </plugin>
     </plugins>
   </build>
@@ -35,7 +42,6 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.13.0</version>
             <configuration>
-              <!-- Use Java 11 for unit tests -->
               <release>11</release>
             </configuration>
           </plugin>
@@ -53,8 +59,13 @@
     </dependency>
   </dependencies>
 
+  <!-- SonarQube Configuration (Optional) -->
+  <properties>
+    <sonar.projectKey>your-project-key</sonar.projectKey>
+    <sonar.host.url>http://your-sonarqube-server:9000</sonar.host.url>
+    <sonar.login>your-sonarqube-token</sonar.login>
+  </properties>
+
 </project>
-
-
 
 
