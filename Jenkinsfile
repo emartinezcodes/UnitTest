@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        // Ensure SONARQUBE_TOKEN is set for secure authentication
+        // Ensure SONARQUBE_SERVER is set if you need it for other purposes, 
+        // but the SonarQube plugin will use its own settings from Jenkins.
         SONARQUBE_SERVER = 'http://172.20.0.3:9000'
-        SONARQUBE_TOKEN = credentials('sonarqube) // Securely inject the SonarQube token from Jenkins credentials store
     }
 
     stages {
@@ -52,7 +52,7 @@ pipeline {
                         // Ensure the SonarQube environment configuration name matches the one in Jenkins
                         withSonarQubeEnv('sonarqube') {
                             echo "Running SonarQube analysis to test configuration..."
-                            sh 'mvn sonar:sonar -Dsonar.login=${SONARQUBE_TOKEN}'
+                            sh 'mvn sonar:sonar'
                         }
                     }
                 }
@@ -60,5 +60,4 @@ pipeline {
         }
     }
 }
-
 
