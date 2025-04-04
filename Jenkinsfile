@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        SONARQUBE = 'sonarqube'  // Name of the SonarQube server from Jenkins config
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -12,7 +16,7 @@ pipeline {
             steps {
                 script {
                     docker.image('maven:3.9.6-eclipse-temurin-17').inside {
-                        sh 'mvn clean install' // Now tests will run during the build
+                        sh 'mvn clean install -DskipTests'  // Skip tests during build
                     }
                 }
             }
@@ -22,11 +26,23 @@ pipeline {
             steps {
                 script {
                     docker.image('maven:3.9.6-eclipse-temurin-11').inside {
-                        sh 'mvn clean test -P java11-tests'
+                        sh 'mvn clean test -P java11-tests'  // Run unit tests with Java 11
+                    }
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    // SonarQube analysis after tests are run
+                    withSonarQubeEnv(SONARQUBE) {
+                        sh 'mvn sonar:sonar -Dsonar.projectKey=myFirstProject -Dsonar.host.url=http://sonarqube:9000'
                     }
                 }
             }
         }
     }
 }
+
 
