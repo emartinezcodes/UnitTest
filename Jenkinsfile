@@ -40,6 +40,7 @@ pipeline {
                     docker.image('maven:3.9.6-eclipse-temurin-11').inside {
                         // Ensure the SonarQube environment configuration name matches the one in Jenkins
                         withSonarQubeEnv('sonarqube') {
+                            echo "Running SonarQube analysis to test configuration..."
                             sh 'mvn sonar:sonar'
                         }
                     }
