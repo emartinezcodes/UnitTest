@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Update SonarQube Server URL to the external IP when accessing from outside Docker
+        // Use external SonarQube server URL for anonymous access
         SONARQUBE_SERVER = 'http://127.0.0.1:9000'
     }
 
@@ -39,7 +39,7 @@ pipeline {
                     docker.image('maven:3.9.6-jdk-8').inside {
                         withSonarQubeEnv('sonarqube') {
                             echo "Running SonarQube analysis with Java 8..."
-                            // Update SonarQube URL for external access
+                            // No token used for anonymous access
                             sh 'mvn sonar:sonar -Dsonar.projectKey=midterm-jenkins-project -Dsonar.branch.name=main -Dsonar.host.url=http://127.0.0.1:9000'
                         }
                     }
