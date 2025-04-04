@@ -2,8 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Ensure SONARQUBE_SERVER is set if you need it for other purposes, 
-        // but the SonarQube plugin will use its own settings from Jenkins.
+        // You can set SONARQUBE_SERVER if needed for other purposes
         SONARQUBE_SERVER = 'http://172.20.0.3:9000'
     }
 
@@ -34,7 +33,7 @@ pipeline {
             }
         }
 
-        // New stage to test connection to SonarQube server
+        // Stage to test connection to SonarQube
         stage('Test Connection to SonarQube') {
             steps {
                 script {
@@ -45,14 +44,15 @@ pipeline {
             }
         }
 
+        // SonarQube Analysis Stage
         stage('SonarQube Analysis') {
             steps {
                 script {
                     docker.image('maven:3.9.6-eclipse-temurin-11').inside {
-                        // Ensure the SonarQube environment configuration name matches the one in Jenkins
+                        // Make sure SonarQube environment configuration name matches the one in Jenkins
                         withSonarQubeEnv('sonarqube') {
-                            echo "Running SonarQube analysis to test configuration..."
-                            sh 'mvn sonar:sonar'
+                            echo "Running SonarQube analysis..."
+                            sh 'mvn sonar:sonar -Dsonar.projectKey=midterm-jenkins-project -Dsonar.branch.name=main'
                         }
                     }
                 }
@@ -60,4 +60,5 @@ pipeline {
         }
     }
 }
+
 
