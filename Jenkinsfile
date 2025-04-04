@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Ensure SONARQUBE_SERVER is set if needed for other purposes
-        SONARQUBE_SERVER = 'http://sonarqube:9000'
+        SONARQUBE_SERVER = 'http://127.0.0.1:9000'
     }
 
     stages {
@@ -41,7 +41,7 @@ pipeline {
                     docker.image('maven:3.9.6-jdk-8').inside {
                         withSonarQubeEnv('sonarqube') {
                             echo "Running SonarQube analysis with Java 8..."
-                            sh 'mvn sonar:sonar -Dsonar.projectKey=midterm-jenkins-project -Dsonar.branch.name=main -Dsonar.host.url=http://sonarqube:9000'
+                            sh 'mvn sonar:sonar -Dsonar.projectKey=midterm-jenkins-project -Dsonar.branch.name=main -Dsonar.host.url=http://127.0.0.1:9000'
                         }
                     }
                 }
