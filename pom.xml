@@ -12,7 +12,7 @@
 
   <build>
     <plugins>
-      <!-- Java 17 Compiler Plugin -->
+      <!-- Java 17 Compiler Plugin for Building -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version>
@@ -43,7 +43,26 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.13.0</version>
             <configuration>
-              <release>11</release>
+              <release>11</release> <!-- Use Java 11 for tests -->
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Java 8 Profile for SonarQube Analysis -->
+    <profile>
+      <id>java8-sonar</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.13.0</version>
+            <configuration>
+              <release>8</release> <!-- Use Java 8 for SonarQube analysis -->
             </configuration>
           </plugin>
         </plugins>
@@ -61,4 +80,5 @@
   </dependencies>
 
 </project>
+
 
