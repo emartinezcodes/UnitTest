@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        // Ensure SONARQUBE_SERVER is set if needed for other purposes
-        SONARQUBE_SERVER = 'http://127.0.0.1:9000'  // Use localhost for SonarQube
+        // Update SonarQube Server URL to match your accessible IP
+        SONARQUBE_SERVER = 'http://127.0.0.2:9000'
     }
 
     stages {
@@ -33,15 +33,13 @@ pipeline {
             }
         }
 
-        // Removed the SonarQube analysis stages for Java 11 and Java 17
-
         stage('SonarQube Analysis with Java 8') {
             steps {
                 script {
                     docker.image('maven:3.9.6-jdk-8').inside {
-                        withSonarQubeEnv('sonarqube') {  // Ensure 'sonarqube' is set in Jenkins global config
+                        withSonarQubeEnv('sonarqube') {
                             echo "Running SonarQube analysis with Java 8..."
-                            sh 'mvn sonar:sonar -Dsonar.projectKey=midterm-jenkins-project -Dsonar.branch.name=main -Dsonar.host.url=http://127.0.0.1:9000'
+                            sh 'mvn sonar:sonar -Dsonar.projectKey=midterm-jenkins-project -Dsonar.branch.name=main -Dsonar.host.url=http://127.0.0.2:9000'
                         }
                     }
                 }
