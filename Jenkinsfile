@@ -66,7 +66,7 @@ pipeline {
                     }
 
                     // Push the Docker image using docker-compose
-                    sh "docker-compose push ${DOCKER_IMAGE_NAME"
+                    sh "docker-compose push ${DOCKER_IMAGE_NAME}"
                 }
             }
         }
