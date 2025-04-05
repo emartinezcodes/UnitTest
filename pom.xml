@@ -10,33 +10,20 @@
   <name>My First Maven Project</name>
   <description>A simple Java project using Maven</description>
 
-  <properties>
-    <!-- SonarQube server configuration -->
-    <sonar.host.url>http://sonar:9000</sonar.host.url> <!-- Change to 'sonar:9000' for Docker network communication -->
-  </properties>
-
   <build>
     <plugins>
-      <!-- Java 17 Compiler Plugin for Building -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version>
         <configuration>
+          <!-- Use Java 17 for building the project -->
           <release>17</release>
         </configuration>
-      </plugin>
-
-      <!-- SonarQube Plugin -->
-      <plugin>
-        <groupId>org.sonarsource.scanner.maven</groupId>
-        <artifactId>sonar-maven-plugin</artifactId>
-        <version>3.9.0.2155</version>
       </plugin>
     </plugins>
   </build>
 
   <profiles>
-    <!-- Java 11 Tests Profile -->
     <profile>
       <id>java11-tests</id>
       <activation>
@@ -48,26 +35,8 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.13.0</version>
             <configuration>
-              <release>11</release> <!-- Use Java 11 for tests -->
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <!-- Java 8 Profile for SonarQube Analysis -->
-    <profile>
-      <id>java8-sonar</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version>
-            <configuration>
-              <release>8</release> <!-- Use Java 8 for SonarQube analysis -->
+              <!-- Use Java 11 for unit tests -->
+              <release>11</release>
             </configuration>
           </plugin>
         </plugins>
