@@ -16,14 +16,6 @@ pipeline {
             }
         }
 
-        stage('Debugging') {
-            steps {
-                // Print the current working directory and list files to verify Dockerfile is there
-                sh 'pwd'  // Print the current directory
-                sh 'ls -l'  // List all files to verify Dockerfile is there
-            }
-        }
-
         stage('Build with Java 17') {
             steps {
                 script {
@@ -73,6 +65,16 @@ pipeline {
             }
         }
 
+        stage('Debug Docker Variables') {
+            steps {
+                script {
+                    // Print the Docker-related environment variables to help debug
+                    echo "DOCKER_IMAGE_NAME: $DOCKER_IMAGE_NAME"
+                    echo "DOCKER_USERNAME: $DOCKER_USERNAME"
+                }
+            }
+        }
+
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
@@ -91,6 +93,7 @@ pipeline {
         }
     }
 }
+
 
 
 
