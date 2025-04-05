@@ -82,10 +82,12 @@ pipeline {
                     }
 
                     // Tag the Docker image
-                    sh 'docker tag $DOCKER_IMAGE_NAME $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest'
+                    ////sh 'docker tag $DOCKER_IMAGE_NAME $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest'
+                    sh "docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
 
                     // Push the Docker image to Docker Hub
-                    sh 'docker push $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest'
+                    ////sh 'docker push $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest'
+                    sh "docker push ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
                 }
             }
         }
