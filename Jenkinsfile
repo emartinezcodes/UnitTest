@@ -51,8 +51,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image using docker-compose
-                    sh "docker-compose build -t ${DOCKER_IMAGE_NAME} ."
+                    // Build the Docker image directly using docker build
+                    sh "docker build -t ${DOCKER_IMAGE_NAME} ."
                 }
             }
         }
@@ -65,10 +65,11 @@ pipeline {
                         sh 'echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin'
                     }
 
-                    // Push the Docker image using docker-compose
-                    sh "docker-compose push ${DOCKER_IMAGE_NAME}"
+                    // Push the Docker image directly using docker push
+                    sh "docker push ${DOCKER_IMAGE_NAME}"
                 }
             }
         }
     }
 }
+
