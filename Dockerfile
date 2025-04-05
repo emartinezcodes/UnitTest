@@ -1,26 +1,17 @@
-# Use OpenJDK 17 base image
-FROM openjdk:17-jdk
+# Use Jenkins LTS image with JDK 17
+FROM jenkins/jenkins:lts-jdk17
 
-# Set the working directory in the container
-WORKDIR /app
+# Switch to root user to install Docker and Docker Compose
+USER root
 
-# Install dependencies and Maven
+# Install Docker
 RUN apt-get update && \
-    apt-get install -y wget unzip && \
-    wget https://archive.apache.org/dist/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz && \
-    tar -xvzf apache-maven-3.8.1-bin.tar.gz && \
-    mv apache-maven-3.8.1 /opt/maven && \
-    ln -s /opt/maven/bin/mvn /usr/bin/mvn
+    apt-get install -y docker.io
 
-# Verify Maven installation
-RUN mvn -v
+# Install Docker Compose
+RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" \
+    -o /usr/local/bin/docker-compose && \
+    chmod +x /usr/local/bin/docker-compose
 
-# Copy the JAR file from the target directory (assumes Maven build output is in target/)
-COPY target/myfirstproject-0.0.1-SNAPSHOT.jar /app/myfirstproject.jar
-
-# Expose the port that the app will run on
-EXPOSE 8080
-
-# Command to run the application
-ENTRYPOINT ["java", "-jar", "myfirstproject.jar"]
-
+# Switch back to Jenkins user
+USER jenkins
