@@ -52,7 +52,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image using docker-compose
-                    sh "docker-compose build"
+                    sh "docker-compose build -t ${DOCKER_IMAGE_NAME} ."
                 }
             }
         }
@@ -66,7 +66,7 @@ pipeline {
                     }
 
                     // Push the Docker image using docker-compose
-                    sh "docker-compose push"
+                    sh "docker-compose push ${DOCKER_IMAGE_NAME"
                 }
             }
         }
