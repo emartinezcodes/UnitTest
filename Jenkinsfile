@@ -4,7 +4,7 @@ pipeline {
     environment {
         SONARQUBE_URL = 'http://sonarqube:9000'  // Ensure SonarQube is accessible
         SONARQUBE_TOKEN = credentials('sonarqube-token')  // Use Jenkins credentials for SonarQube token
-        DOCKER_IMAGE_NAME = '0eliz19/myfirstproject'  // Replace with your Docker Hub username and image name
+        DOCKER_IMAGE_NAME = '0eliz19/myfirstproject'  // Docker Hub image name (lowercase)
         DOCKER_CREDENTIALS = 'docker-hub-credentials'  // Docker Hub credentials in Jenkins
     }
 
@@ -13,6 +13,14 @@ pipeline {
             steps {
                 // Clone the Java project from GitHub
                 git url: 'https://github.com/emartinezcodes/UnitTest.git'
+            }
+        }
+
+        stage('Debugging') {
+            steps {
+                // Print the current working directory and list files to verify Dockerfile is there
+                sh 'pwd'  // Print the current directory
+                sh 'ls -l'  // List all files to verify Dockerfile is there
             }
         }
 
@@ -76,4 +84,5 @@ pipeline {
         }
     }
 }
+
 
