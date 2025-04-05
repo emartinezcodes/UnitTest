@@ -4,7 +4,7 @@ pipeline {
     environment {
         SONARQUBE_URL = 'http://sonarqube:9000'  // Ensure SonarQube is accessible
         SONARQUBE_TOKEN = credentials('sonarqube-token')  // Use Jenkins credentials for SonarQube token
-        DOCKER_IMAGE_NAME = '0eliz19/0eliz19-myfirstproject:tagname'  // Docker Hub image name (with latest tag)
+        DOCKER_IMAGE_NAME = '0eliz19/0eliz19-myfirstproject'  // Docker Hub image name (with latest tag)
         DOCKER_CREDENTIALS = 'docker-hub-credentials'  // Docker Hub credentials in Jenkins
     }
 
