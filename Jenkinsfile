@@ -18,8 +18,9 @@ pipeline {
         stage('Build with Java 17') {
             steps {
                 script {
-                    docker.image('openjdk:17').inside {
-                        sh 'mvn clean install' // This will compile and build the Java project (JAR file)
+                    // Use your custom java17 container for building the project
+                    docker.image('java17').inside {
+                        sh 'mvn clean install'  // This will compile and build the Java project (JAR file)
                     }
                 }
             }
@@ -28,7 +29,8 @@ pipeline {
         stage('Test with Java 11') {
             steps {
                 script {
-                    docker.image('openjdk:11').inside {
+                    // Run the unit tests with Java 11 inside your custom container
+                    docker.image('java11').inside {
                         sh 'mvn clean test -P java11-tests'  // Run tests with Java 11
                     }
                 }
@@ -38,7 +40,8 @@ pipeline {
         stage('SonarQube Analysis with Java 8') {
             steps {
                 script {
-                    docker.image('openjdk:8').inside {
+                    // Run SonarQube analysis using Java 8
+                    docker.image('maven:3.9.6-eclipse-temurin-8').inside {
                         sh 'mvn clean install -P java8-sonar'  // Run SonarQube analysis with Java 8
                     }
                 }
