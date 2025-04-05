@@ -57,6 +57,13 @@ pipeline {
             }
         }
 
+        stage('Verify JAR file') {
+            steps {
+                // List the files in the target directory to confirm the JAR file is present
+                sh 'ls -l target/'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -84,5 +91,6 @@ pipeline {
         }
     }
 }
+
 
 
