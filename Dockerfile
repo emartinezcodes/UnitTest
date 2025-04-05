@@ -1,16 +1,24 @@
-# Use OpenJDK 17 as the base image
+# Use OpenJDK 17 base image
 FROM openjdk:17-jdk
-
-# Install Maven
-RUN apt-get update && apt-get install -y maven
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the JAR file from the build stage
-COPY target/myFirstProject-0.0.1-SNAPSHOT.jar /app/myfirstproject.jar
+# Install dependencies and Maven
+RUN apt-get update && \
+    apt-get install -y wget unzip && \
+    wget https://archive.apache.org/dist/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz && \
+    tar -xvzf apache-maven-3.8.1-bin.tar.gz && \
+    mv apache-maven-3.8.1 /opt/maven && \
+    ln -s /opt/maven/bin/mvn /usr/bin/mvn
 
-# Expose the port the app will run on
+# Verify Maven installation
+RUN mvn -v
+
+# Copy the JAR file from the target directory (assumes Maven build output is in target/)
+COPY target/myfirstproject-0.0.1-SNAPSHOT.jar /app/myfirstproject.jar
+
+# Expose the port that the app will run on
 EXPOSE 8080
 
 # Command to run the application
