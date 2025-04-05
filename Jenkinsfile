@@ -18,8 +18,15 @@ pipeline {
         stage('Build with Java 17') {
             steps {
                 script {
-                    // Use your custom java17 container for building the project
-                    docker.image('java17').inside {
+                    // Make sure you are using the correct image name for Java 17
+                    docker.image('openjdk:17-jdk').inside {
+                        // Print the current working directory for debugging
+                        sh 'pwd'
+                        
+                        // List files in the current directory to verify the Docker container setup
+                        sh 'ls -l'
+                        
+                        // Run the Maven build command
                         sh 'mvn clean install'  // This will compile and build the Java project (JAR file)
                     }
                 }
@@ -29,8 +36,7 @@ pipeline {
         stage('Test with Java 11') {
             steps {
                 script {
-                    // Run the unit tests with Java 11 inside your custom container
-                    docker.image('java11').inside {
+                    docker.image('openjdk:11').inside {
                         sh 'mvn clean test -P java11-tests'  // Run tests with Java 11
                     }
                 }
@@ -40,8 +46,7 @@ pipeline {
         stage('SonarQube Analysis with Java 8') {
             steps {
                 script {
-                    // Run SonarQube analysis using Java 8
-                    docker.image('maven:3.9.6-eclipse-temurin-8').inside {
+                    docker.image('openjdk:8').inside {
                         sh 'mvn clean install -P java8-sonar'  // Run SonarQube analysis with Java 8
                     }
                 }
@@ -51,6 +56,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    // Build the Docker image using the Dockerfile in the current directory
                     sh "docker build -t ${DOCKER_IMAGE_NAME} ."
                 }
             }
@@ -60,8 +66,11 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        // Login to Docker Hub using credentials stored in Jenkins
                         sh 'echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin'
                     }
+
+                    // Push the Docker image to Docker Hub
                     sh "docker push ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
                 }
             }
