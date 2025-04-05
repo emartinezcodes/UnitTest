@@ -16,6 +16,14 @@ pipeline {
             }
         }
 
+        stage('Debugging') {
+            steps {
+                // Print the current working directory and list files to verify Dockerfile is there
+                sh 'pwd'  // Print the current directory
+                sh 'ls -l'  // List all files to verify Dockerfile is there
+            }
+        }
+
         stage('Build with Java 17') {
             steps {
                 script {
@@ -68,8 +76,6 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
-                    // Show the Docker image tag being pushed
-                    echo "Pushing Docker image: $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest"
                     // Login to Docker Hub using credentials stored in Jenkins
                     withCredentials([usernamePassword(credentialsId: "$DOCKER_CREDENTIALS", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
@@ -85,6 +91,7 @@ pipeline {
         }
     }
 }
+
 
 
 
