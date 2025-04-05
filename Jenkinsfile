@@ -66,7 +66,7 @@ pipeline {
                     }
 
                     // Push the Docker image to Docker Hub
-                    sh "docker push ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
+                    sh "docker push ${DOCKER_IMAGE_NAME}"
                 }
             }
         }
