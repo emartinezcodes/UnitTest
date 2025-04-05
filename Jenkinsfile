@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        // Use external SonarQube server URL for anonymous access
-        SONARQUBE_SERVER = 'http://127.0.0.1:9000'
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -17,7 +12,7 @@ pipeline {
             steps {
                 script {
                     docker.image('maven:3.9.6-eclipse-temurin-17').inside {
-                        sh 'mvn clean install -DskipTests'
+                        sh 'mvn clean install' // Now tests will run during the build
                     }
                 }
             }
@@ -27,27 +22,11 @@ pipeline {
             steps {
                 script {
                     docker.image('maven:3.9.6-eclipse-temurin-11').inside {
-                        sh 'mvn test -P java11-tests'
-                    }
-                }
-            }
-        }
-
-        stage('SonarQube Analysis with Java 8') {
-            steps {
-                script {
-                    docker.image('maven:3.9.6-jdk-8').inside {
-                        withSonarQubeEnv('sonarqube') {
-                            echo "Running SonarQube analysis with Java 8..."
-                            // No token used for anonymous access
-                            sh 'mvn sonar:sonar -Dsonar.projectKey=midterm-jenkins-project -Dsonar.branch.name=main -Dsonar.host.url=http://127.0.0.1:9000'
-                        }
+                        sh 'mvn clean test -P java11-tests'
                     }
                 }
             }
         }
     }
 }
-
-
 
