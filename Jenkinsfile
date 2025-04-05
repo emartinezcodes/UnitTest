@@ -18,8 +18,9 @@ pipeline {
         stage('Build with Java 17') {
             steps {
                 script {
-                    docker.image('openjdk:17').inside {
-                        sh 'mvn clean install'  // This will compile and build the Java project (JAR file)
+                    // Use the Maven container with OpenJDK 17 for building the project
+                    docker.image('maven:3.8.1-openjdk-17-slim').inside {
+                        sh 'mvn clean install' // This will compile and build the Java project (JAR file)
                     }
                 }
             }
@@ -28,7 +29,8 @@ pipeline {
         stage('Test with Java 11') {
             steps {
                 script {
-                    docker.image('openjdk:11').inside {
+                    // Use the Maven container with OpenJDK 11 for running the tests
+                    docker.image('maven:3.8.1-openjdk-11-slim').inside {
                         sh 'mvn clean test -P java11-tests'  // Run tests with Java 11
                     }
                 }
@@ -38,7 +40,8 @@ pipeline {
         stage('SonarQube Analysis with Java 8') {
             steps {
                 script {
-                    docker.image('openjdk:8').inside {
+                    // Use the Maven container with OpenJDK 8 for SonarQube analysis
+                    docker.image('maven:3.8.1-openjdk-8-slim').inside {
                         sh 'mvn clean install -P java8-sonar'  // Run SonarQube analysis with Java 8
                     }
                 }
@@ -48,6 +51,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    // Build the Docker image using the Dockerfile in the current directory
                     sh "docker build -t ${DOCKER_IMAGE_NAME} ."
                 }
             }
@@ -56,9 +60,12 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
+                    // Login to Docker Hub using credentials stored in Jenkins
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh 'echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin'
                     }
+
+                    // Push the Docker image to Docker Hub
                     sh "docker push ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
                 }
             }
