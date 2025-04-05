@@ -73,6 +73,15 @@ pipeline {
             }
         }
 
+        stage('List Docker Images') {
+            steps {
+                script {
+                    // List all Docker images to verify the image exists
+                    sh 'docker images'
+                }
+            }
+        }
+
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
@@ -82,11 +91,9 @@ pipeline {
                     }
 
                     // Tag the Docker image
-                    ////sh 'docker tag $DOCKER_IMAGE_NAME $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest'
                     sh "docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
 
                     // Push the Docker image to Docker Hub
-                    ////sh 'docker push $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest'
                     sh "docker push ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
                 }
             }
