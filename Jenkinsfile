@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     // Use the Maven container with OpenJDK 11 for running the tests
-                    docker.image('openjdk:8-jdk').inside {
+                    docker.image('maven:3.8.1-openjdk-11-slim').inside {
                         sh 'mvn clean test -P java11-tests'  // Run tests with Java 11
                     }
                 }
