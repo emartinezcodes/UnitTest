@@ -65,19 +65,11 @@ pipeline {
             }
         }
 
-        stage('Debug Docker Variables') {
-            steps {
-                script {
-                    // Print the Docker-related environment variables to help debug
-                    echo "DOCKER_IMAGE_NAME: $DOCKER_IMAGE_NAME"
-                    echo "DOCKER_USERNAME: $DOCKER_USERNAME"
-                }
-            }
-        }
-
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
+                    // Show the Docker image tag being pushed
+                    echo "Pushing Docker image: $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest"
                     // Login to Docker Hub using credentials stored in Jenkins
                     withCredentials([usernamePassword(credentialsId: "$DOCKER_CREDENTIALS", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
@@ -93,7 +85,6 @@ pipeline {
         }
     }
 }
-
 
 
 
