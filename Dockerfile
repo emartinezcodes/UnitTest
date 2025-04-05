@@ -1,19 +1,29 @@
-# Use Maven to build the project
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Use the Jenkins LTS image with JDK 17 as base image for Jenkins
+FROM jenkins/jenkins:lts-jdk17
 
-WORKDIR /app
+# Switch to root user to install Docker
+USER root
 
-COPY pom.xml .
-COPY src ./src
+# Install Docker
+RUN apt-get update && \
+    apt-get install -y docker.io && \
+    usermod -aG docker jenkins
 
-RUN mvn clean install
+# Switch back to Jenkins user
+USER jenkins
 
-# Use OpenJDK to run the app
+# Use a base image with OpenJDK (OpenJDK 17)
 FROM openjdk:17-jdk
 
+# Set the working directory in the container
 WORKDIR /app
 
-# Ensure the correct path to the JAR file
-COPY --from=build /app/target/myFirstProject-0.0.1-SNAPSHOT.jar /app/myfirstproject.jar
+# Copy the JAR file from the target directory (assumes Maven build output is in target/)
+COPY target/myfirstproject-0.0.1-SNAPSHOT.jar /app/myfirstproject.jar  # Ensure the lowercase name
 
+# Expose the port that the app will run on
+EXPOSE 8080
+
+# Command to run the application
 ENTRYPOINT ["java", "-jar", "myfirstproject.jar"]
+
