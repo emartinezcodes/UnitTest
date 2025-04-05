@@ -18,15 +18,7 @@ pipeline {
         stage('Build with Java 17') {
             steps {
                 script {
-                    // Make sure you are using the correct image name for Java 17
-                    docker.image('openjdk:17-jdk').inside {
-                        // Print the current working directory for debugging
-                        sh 'pwd'
-                        
-                        // List files in the current directory to verify the Docker container setup
-                        sh 'ls -l'
-                        
-                        // Run the Maven build command
+                    docker.image('openjdk:17').inside {
                         sh 'mvn clean install'  // This will compile and build the Java project (JAR file)
                     }
                 }
@@ -56,7 +48,6 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image using the Dockerfile in the current directory
                     sh "docker build -t ${DOCKER_IMAGE_NAME} ."
                 }
             }
@@ -66,15 +57,13 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        // Login to Docker Hub using credentials stored in Jenkins
                         sh 'echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin'
                     }
-
-                    // Push the Docker image to Docker Hub
                     sh "docker push ${DOCKER_USERNAME}/${DOCKER_IMAGE_NAME}:latest"
                 }
             }
         }
     }
 }
+
 
