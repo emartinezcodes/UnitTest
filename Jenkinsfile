@@ -16,11 +16,13 @@ pipeline {
             }
         }
 
-        stage('Debugging') {
+        stage('Debug Docker Variables') {
             steps {
-                // Print the current working directory and list files to verify Dockerfile is there
-                sh 'pwd'  // Print the current directory
-                sh 'ls -l'  // List all files to verify Dockerfile is there
+                script {
+                    // Print the Docker-related environment variables to help debug
+                    echo "DOCKER_IMAGE_NAME: $DOCKER_IMAGE_NAME"
+                    echo "DOCKER_USERNAME: $DOCKER_USERNAME"
+                }
             }
         }
 
@@ -81,7 +83,7 @@ pipeline {
                         sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
                     }
 
-                    // Tag the Docker image
+                    // Correct tag format without leading slash
                     sh 'docker tag $DOCKER_IMAGE_NAME $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest'
 
                     // Push the Docker image to Docker Hub
@@ -91,6 +93,7 @@ pipeline {
         }
     }
 }
+
 
 
 
