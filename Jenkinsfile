@@ -4,7 +4,7 @@ pipeline {
     environment {
         SONARQUBE_URL = 'http://sonarqube:9000'  // Ensure SonarQube is accessible
         SONARQUBE_TOKEN = credentials('sonarqube-token')  // Use Jenkins credentials for SonarQube token
-        DOCKER_IMAGE_NAME = '0eliz19/0eliz19-myfirstproject:tagname'  // Docker Hub image name (with latest tag)
+        DOCKER_IMAGE_NAME = '0eliz19/0eliz19-myfirstproject:tagname'  // Docker Hub image name (with tag)
         DOCKER_CREDENTIALS = 'docker-hub-credentials'  // Docker Hub credentials in Jenkins
     }
 
@@ -20,7 +20,7 @@ pipeline {
                 script {
                     // Use the Maven container with OpenJDK 17 for building the project
                     docker.image('maven:3.8.1-openjdk-17-slim').inside {
-                        sh 'mvn clean install' // This will compile and build the Java project (JAR file)
+                        sh 'mvn clean install'  // This will compile and build the Java project (JAR file)
                     }
                 }
             }
@@ -51,8 +51,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image using the Dockerfile in the current directory
-                    sh "docker build -t ${DOCKER_IMAGE_NAME} ."
+                    // Build the Docker image using docker-compose
+                    sh "docker-compose build"
                 }
             }
         }
@@ -65,12 +65,10 @@ pipeline {
                         sh 'echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin'
                     }
 
-                    // Push the Docker image to Docker Hub
-                    sh "docker push ${DOCKER_IMAGE_NAME}"
+                    // Push the Docker image using docker-compose
+                    sh "docker-compose push"
                 }
             }
         }
     }
 }
-
-
