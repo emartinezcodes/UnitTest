@@ -1,14 +1,19 @@
-# Use a base image with OpenJDK
-FROM openjdk:17-jdk
+# Use Maven to build the project
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy the JAR file from the target directory (assumes Maven build output is in target/)
-COPY target/myfirstproject-0.0.1-SNAPSHOT.jar /app/myfirstproject.jar  # Ensure the lowercase name
+COPY pom.xml .
+COPY src ./src
 
-# Expose the port that the app will run on
-EXPOSE 8080
+RUN mvn clean install
 
-# Command to run the application
+# Use OpenJDK to run the app
+FROM openjdk:17-jdk
+
+WORKDIR /app
+
+# Ensure the correct path to the JAR file
+COPY --from=build /app/target/myFirstProject-0.0.1-SNAPSHOT.jar /app/myfirstproject.jar
+
 ENTRYPOINT ["java", "-jar", "myfirstproject.jar"]
