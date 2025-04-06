@@ -18,8 +18,12 @@ pipeline {
         stage('Build with Java 17') {
             steps {
                 script {
-                    docker.image('maven:3.8.1-openjdk-17-slim').inside {
-                        sh 'mvn clean install'
+                    docker.image('openjdk:17-jdk').inside {
+                        sh '''
+                          apt-get update
+                          apt-get install -y maven
+                          mvn clean install
+                        '''
                     }
                 }
             }
@@ -60,9 +64,14 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    withCredentials([usernamePassword(
+                        credentialsId: "${DOCKER_CREDENTIALS}",
+                        usernameVariable: 'DOCKER_USERNAME',
+                        passwordVariable: 'DOCKER_PASSWORD'
+                    )]) {
                         sh 'echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin'
                     }
+
                     sh "docker push ${DOCKER_IMAGE_NAME}"
                 }
             }
