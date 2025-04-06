@@ -18,12 +18,9 @@ pipeline {
         stage('Build with Java 17') {
             steps {
                 script {
-                    docker.image('openjdk:17-jdk').inside {
-                        sh '''
-                          apt-get update
-                          apt-get install -y maven
-                          mvn clean install
-                        '''
+                    docker.image('maven:3.8.1-openjdk-17-slim').inside {
+                         sh 'mvn clean install'
+                          
                     }
                 }
             }
